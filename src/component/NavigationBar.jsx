@@ -171,11 +171,6 @@ const Content = styled.div `
     background-color: inherit;
 `;
 
-const logOut = () => {
-    localStorage.removeItem("user-role");
-    window.location.reload();
-}
-
 const NavigationBar = (props) => {
 
     return (
@@ -189,12 +184,13 @@ const NavigationBar = (props) => {
                          Csiki sör
                     </MenuItemHome>
                     <Content>
+                    <MenuItem> Egyéb </MenuItem>
                         <MenuItem>
                             <DropDown>
-                                <DropBtn> Storage </DropBtn>
+                                <DropBtn> Raktár </DropBtn>
                                 <DropDownContent>
-                                    <DropDownItem href="/storage_view"> View Storage </DropDownItem>
-                                    <DropDownItem href="/upload_storage"> Upload Storage</DropDownItem> 
+                                    <DropDownItem href="/storage_view"> Raktár megtekintése </DropDownItem>
+                                    <DropDownItem href="/upload_storage"> Raktár feltöltése</DropDownItem>
                                 </DropDownContent>
                             </DropDown>
                         </MenuItem>

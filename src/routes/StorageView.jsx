@@ -35,6 +35,14 @@ const StorageLabel = styled.label `
     margin-top: 25px;
 `;
 
+const ViewTitle = styled.div `
+    text-align: center;
+    margin-top: 3%;
+    margin-bottom: 2%;
+    margin-left: 20%;
+    margin-right: 20%;
+    font-size: 45px;
+`;
 
 @inject('StorageStore')
 @observer
@@ -55,28 +63,38 @@ class StorageView extends Component {
         const {StorageStore} = this.props;
         return (
             <div>
-                <StorageLabel for="beer">Beer type:</StorageLabel>
-                <Select
-                    id="beer"
-                    value={StorageStore.selectedBeer}
-                    onChange={(e) => StorageStore.setSelectedBeer(e.target.value)}>
-                        <Option> Igazi csiki sor </Option>
-                        <Option> Tiltott csiki sor </Option>
-                        <Option> Kremes csiki sor </Option>
-                </Select>
-                
+                <ViewTitle> Raktáron lévő söreink </ViewTitle>
+                    <StorageLabel for="type">Raktár cime:</StorageLabel>
+                    <Select  class="form-control" id="store_name"  onChange={ (e) => StorageStore.setSelectedStorage(e.target.value)}>
+                        {
+                            StorageStore.getStorages.map((store) => {
+                                return (
+                                    <Option>{store.address}</Option>
+                                )
+                            })
+                        }
+                    </Select>
+
                 <TableContainer>
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Quantity</th>
+                            <th>Sör neve</th>
+                            <th>Mennyiség (üvegben)</th>
+                            <th>Mennyiség (ládában) </th>
                         </tr>
                         </thead>
                         <tbody>
                             {
-                                
+                                StorageStore.getFilteredBeers.map((beer) => {
+                                    return (
+                                        <tr>
+                                            <td> {beer.name} </td>
+                                            <td> {beer.quantity} </td>
+                                            <td> {Math.round(beer.quantity / 20)} </td>
+                                        </tr>
+                                    );
+                                })
                             }
                         </tbody>
                     </table>
