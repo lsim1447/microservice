@@ -2,7 +2,7 @@ import React , { Component } from 'react';
 import styled from 'styled-components';
 import { observer, inject } from 'mobx-react';
 import axios from 'axios';
-
+import { UPLOAD_STORAGE_URL } from './../Constants';
 
 const AddNewForm = styled.form `
     text-align: left;
@@ -29,28 +29,22 @@ const TitleLabel = styled.label`
 class UploadStorage extends Component {
 
     onSubmit(){
-        console.log('storage');
-        console.log(this.props.StorageStore.getAddStorage);
         var tmp = this.props.StorageStore.getStorages
             .filter((store) =>  store.address === this.props.StorageStore.getAddStorage);
 
-        console.log(tmp);
         const beer = {
             name: this.props.StorageStore.getAddName,
             quantity: this.props.StorageStore.getAddQuantity,
             storage: tmp[0]
         }
 
-        console.log(beer);
-
-        //post request to the database. insert/update the Storage table
-        const url = "some url";
-        axios.post(url, beer)
+        axios.post(UPLOAD_STORAGE_URL, beer)
             .then((response) => {
+                //console.log('succes' + response);
                 this.props.StorageStore.addNewBeer(beer);
             })
             .catch((err) => {
-
+                //console.log('error: ' + err);
             })
     }
 
@@ -61,11 +55,11 @@ class UploadStorage extends Component {
                 <TitleLabel>Raktár feltöltése</TitleLabel>
                 <AddNewForm>
                     <label for="type">Raktár neve:</label>
-                    <select  class="form-control" id="store_name"  onChange={ (e) => StorageStore.setAddStorage(e.target.value)}>
+                    <select className="form-control" id="store_name"  onChange={ (e) => StorageStore.setAddStorage(e.target.value)}>
                         {
-                            StorageStore.getStorages.map((store) => {
+                            StorageStore.getStorages.map((store, index) => {
                                 return (
-                                    <option>{store.address}</option>
+                                    <option key={index}>{store.address}</option>
                                 )
                             })
                         }
@@ -73,7 +67,7 @@ class UploadStorage extends Component {
                     <br/>
 
                     <label for="type">Sör neve:</label>
-                    <select  class="form-control" id="name"  onChange={ (e) => StorageStore.setAddName(e.target.value)}>
+                    <select  className="form-control" id="name"  onChange={ (e) => StorageStore.setAddName(e.target.value)}>
                         <option>Igazi csiki sör</option>
                         <option>Tiltott csiki sör</option>
                         <option>Krémes csiki sör</option>
@@ -81,12 +75,12 @@ class UploadStorage extends Component {
                     <br/>
 
                     <label for="type">Mennyiség:</label>
-                    <input type="text" class="form-control" id="type" placeholder="Mennyiség" onChange={ (e) => StorageStore.setAddQuantity(e.target.value)}/>
+                    <input type="text" className="form-control" id="type" placeholder="Mennyiség" onChange={ (e) => StorageStore.setAddQuantity(e.target.value)}/>
                     <br/>
 
 
                     <br/>
-                    <button style={{width: "100%"}} type="button" class="btn btn-primary" onClick={ () => this.onSubmit()}>Submit</button>
+                    <button style={{width: "100%"}} type="button" className="btn btn-primary" onClick={ () => this.onSubmit()}>Submit</button>
                 </AddNewForm>
             </div>
         )

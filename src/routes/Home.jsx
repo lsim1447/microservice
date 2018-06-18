@@ -9,25 +9,20 @@ const TemporaryMessage = styled.div `
     padding-top: 150px;
     padding-bottom: 100px;
 `
+const HomeImage = styled.img `
+    width: 50%;
+    height: 400px;
+    margin-left: 25%;
+    margin-right: 25%;
+`;
 
 class Home extends Component {
-
-    checkAxios(){
-        const url = 'http://localhost:8080/transport/secured/all'
-        axios.get(url)
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(err => {
-                console.log("You have no access for this");
-            })
-    }
 
     render(){
         return (
             <div>
-                <TemporaryMessage onClick={() => this.checkAxios()}> Welcome to our page! </TemporaryMessage>
-                <img src="https://csikisor.hu/wp-content/uploads/2017/10/csikimix.jpg" alt="transport" style={{width: "50%", height: "400px", marginLeft: "25%", marginRight: "25%"}} />
+                <TemporaryMessage> Welcome to our page! </TemporaryMessage>
+                <HomeImage src="https://csikisor.hu/wp-content/uploads/2017/10/csikimix.jpg" alt="transport"/>
             </div>
         )
     }

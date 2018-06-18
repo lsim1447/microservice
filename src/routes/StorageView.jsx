@@ -2,6 +2,7 @@ import React , { Component } from 'react';
 import styled from 'styled-components';
 import { observer, inject } from 'mobx-react';
 import axios from 'axios';
+import { GET_ALL_BEERS_URL, GET_ALL_STORAGES_URL, BEER_BOTTLE_PER_BOX } from './../Constants';
 
 const Select = styled.select`
     width: 80%;
@@ -49,14 +50,30 @@ const ViewTitle = styled.div `
 class StorageView extends Component {
 
     componentDidMount(){
-        // const url = 'some_url'
-        // axios.get(url)
-        //     .then(response => {
-        //         console.log(response.data);
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     });
+        axios.get(GET_ALL_BEERS_URL)
+            .then((response) => {
+                var beers = [];
+                response.data.map((beer) => {
+                    beers.push(beer);
+                });
+                this.props.StorageStore.setBeers(beers);
+            })
+            .catch((err) => {
+                console.log('error' + err);
+            });
+
+        axios.get(GET_ALL_STORAGES_URL)
+            .then((response) => {
+                var storages = [];
+                response.data.map((storage) => {
+                    storages.push(storage);
+                });
+                this.props.StorageStore.setStorages(storages);
+            })
+            .catch((err) => {
+                console.log('error' + err);
+            })
+        
     }
 
     render(){
@@ -64,19 +81,19 @@ class StorageView extends Component {
         return (
             <div>
                 <ViewTitle> Raktáron lévő söreink </ViewTitle>
-                    <StorageLabel for="type">Raktár cime:</StorageLabel>
+                    <StorageLabel for="type">Válassz raktárt:</StorageLabel>
                     <Select  class="form-control" id="store_name"  onChange={ (e) => StorageStore.setSelectedStorage(e.target.value)}>
                         {
-                            StorageStore.getStorages.map((store) => {
+                            StorageStore.getStorages.map((store, index) => {
                                 return (
-                                    <Option>{store.address}</Option>
+                                    <Option key={index}>{store.address}</Option>
                                 )
                             })
                         }
                     </Select>
 
                 <TableContainer>
-                    <table class="table">
+                    <table className="table">
                         <thead>
                         <tr>
                             <th>Sör neve</th>
@@ -86,12 +103,12 @@ class StorageView extends Component {
                         </thead>
                         <tbody>
                             {
-                                StorageStore.getFilteredBeers.map((beer) => {
+                                StorageStore.getFilteredBeers.map((beer, index) => {
                                     return (
-                                        <tr>
+                                        <tr key={index}>
                                             <td> {beer.name} </td>
                                             <td> {beer.quantity} </td>
-                                            <td> {Math.round(beer.quantity / 20)} </td>
+                                            <td> {Math.round(beer.quantity / BEER_BOTTLE_PER_BOX)} </td>
                                         </tr>
                                     );
                                 })

@@ -55,7 +55,7 @@ class StorageStore {
     ];
     @observable selectedStorage = this.storages[0].address;
     @observable add_storage = this.storages[0].address;
-    @observable add_name = this.beers[0].name;
+    @observable add_name = 'Igazi csiki sör';
     @observable add_quantity = 0;
 
     @action setSelectedStorage = (storage) =>{
@@ -66,6 +66,7 @@ class StorageStore {
     }
 
     @action setBeers = (beers) => {
+        console.log("beeeeeeeeeeeeeeeeeeeeeeeeeers");
         this.beers = beers;
     }
 
